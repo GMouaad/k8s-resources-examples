@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-java
+  namespace: default
+  labels:
+    app: hello-world-java
+    version: v1
+spec:
+  replicas: 2
+  minReadySeconds: 30
+  selector:
+    matchLabels:
+      app: hello-world-java
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: hello-world-java
+
+    spec:
+      containers:
+      - name: hello-world-java
+        image: mgsair/hello-world-java:0.0.1.RELEASE
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: SOME_OTHER_APP_SERVICE_HOST
+          # Option 1: include directly as env. var.
+            value: http://some-other-app
+          # Option 2: use k8s ConfigMap
+            valueFrom:
+              configMapKeyRef:
+                key: SOME_OTHER_APP_SERVICE_HOST
+                name: mConfigMap
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
