@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-world-java-config-ap
+data:
+  SOME_OTHER_APP_SERVICE_HOST: http://some-other-app
+  SERVER_PORT: "8080"
